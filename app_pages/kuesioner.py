@@ -152,7 +152,7 @@ with st.form("kuesioner_form", border=False):
             "Nama Pasien", placeholder="Contoh: Budi"
         )
         umur_input = st.text_input(
-            "Umur Pasien", placeholder="Contoh: 2 Bulan"
+            "Umur Pasien", placeholder="Contoh: 2"
         )
     with c2:
         jenis_kelamin = st.selectbox(
@@ -200,11 +200,20 @@ with st.form("kuesioner_form", border=False):
 if submitted:
     missing = []
     umur_value = None
+    umur_satuan_value = "tahun"
     if umur_input is None or not str(umur_input).strip():
         missing.append("Umur Pasien")
     else:
+        raw = str(umur_input).strip()
+        normalized = raw.lower()
+        if "bulan" in normalized:
+            umur_satuan_value = "bulan"
+        elif "tahun" in normalized:
+            umur_satuan_value = "tahun"
+
+        cleaned = normalized.replace("bulan", "").replace("tahun", "").strip()
         try:
-            umur_value = int(str(umur_input).strip())
+            umur_value = int(cleaned)
         except ValueError:
             st.error("Umur Pasien harus berupa angka bulat, misalnya 2 atau 18.")
             st.stop()
@@ -227,7 +236,7 @@ if submitted:
             "respondent_code": generate_respondent_code(),
             "nama_pasien": nama_pasien.strip() if nama_pasien else None,
             "umur": int(umur_value),
-            "umur_satuan": "tahun",
+            "umur_satuan": umur_satuan_value,
             "jenis_kelamin": jenis_kelamin,
             "lama_dirawat": lama_dirawat,
             "saran": saran.strip() if saran else None,
