@@ -104,21 +104,74 @@ st.markdown(
         box-shadow: 0 8px 18px rgba(15, 23, 42, 0.05);
     }
     div[data-testid="stTextInput"] input,
-    div[data-testid="stSelectbox"] select {
+    div[data-testid="stSelectbox"] select,
+    div[data-testid="stTextArea"] textarea {
         border-radius: 14px !important;
         background: rgba(255, 255, 255, 0.96) !important;
         color: #0F172A !important;
         font-weight: 500;
     }
     div[data-testid="stTextInput"] input:focus,
-    div[data-testid="stSelectbox"] select:focus {
+    div[data-testid="stSelectbox"] select:focus,
+    div[data-testid="stTextArea"] textarea:focus {
         border-color: rgba(14, 124, 123, 0.8) !important;
         box-shadow: 0 0 0 3px rgba(20, 160, 152, 0.16) !important;
+    }
+    div[data-testid="stTextArea"] > div {
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid rgba(14, 124, 123, 0.18);
+        border-radius: 16px;
+        box-shadow: 0 8px 18px rgba(15, 23, 42, 0.05);
     }
     div[data-testid="stButton"] > button[kind="primary"] {
         border-radius: 14px;
         font-weight: 800;
         padding: 0.9rem 1.2rem;
+        background: linear-gradient(135deg, #0E7C7B 0%, #14A098 100%);
+        border: none;
+        box-shadow: 0 12px 20px rgba(14, 124, 123, 0.22);
+    }
+
+    @media (max-width: 640px) {
+        .kuesioner-header {
+            padding: 1.2rem 1rem;
+            border-radius: 16px;
+        }
+        .kuesioner-header h1 {
+            font-size: 1.25rem;
+        }
+        .kuesioner-header p {
+            font-size: 0.82rem;
+        }
+        .home-watermark {
+            height: 120px;
+            margin: 0 0 0.25rem;
+        }
+        .home-watermark img {
+            width: min(260px, 76vw);
+            height: 260px;
+            opacity: 0.22;
+        }
+        div[data-testid="stForm"] {
+            padding: 0.8rem 0.65rem 0.25rem;
+            border-radius: 18px;
+        }
+        [data-baseweb="radio-group"] > label {
+            padding: 0.45rem 0.4rem;
+        }
+        div[data-testid="stButton"] > button[kind="primary"] {
+            width: 100%;
+            border-radius: 12px;
+            padding: 0.85rem 1rem;
+        }
+        [data-testid="stHorizontalBlock"] {
+            gap: 0.25rem !important;
+        }
+        [data-testid="stRadio"] > div[role="radiogroup"] {
+            display: grid !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 0.5rem;
+        }
     }
     </style>
     """,

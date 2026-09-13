@@ -22,7 +22,7 @@ LOGO_DATA_URI = (
 st.set_page_config(
     page_title="Kuesioner Kepuasan Pasien — RSUD SLG Kediri",
     page_icon=":material/local_hospital:",
-    layout="centered",
+    layout="wide",
 )
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -30,10 +30,6 @@ st.set_page_config(
 # ═══════════════════════════════════════════════════════════════════════════
 st.markdown(
     """
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
-
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
@@ -62,14 +58,22 @@ st.markdown(
         background-size: 30px 30px;
         mask-image: linear-gradient(to bottom right, black, transparent 72%);
     }
+    section.main > div {
+        padding-top: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
 
     .welcome-wrap {
+        min-height: 100vh;
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: center;
         text-align: center;
-        padding: 3.5rem 1rem 1rem 1rem;
-        animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        padding: 1rem 1rem 1.5rem 1rem;
+        animation: fadeUp 0.45s ease;
+        width: 100%;
     }
     @keyframes fadeUp {
         0% { opacity: 0; transform: translateY(14px); }
@@ -79,20 +83,21 @@ st.markdown(
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.1rem;
+        width: 100%;
     }
     .welcome-logos img {
-        width: min(360px, 82vw);
+        width: min(440px, 90vw);
         height: auto;
         object-fit: contain;
         padding: 0;
         background: transparent;
         border: none;
         box-shadow: none;
-        filter: drop-shadow(0 12px 24px rgba(14, 124, 123, 0.12));
+        filter: drop-shadow(0 18px 30px rgba(14, 124, 123, 0.12));
     }
     .welcome-title h1 {
-        font-size: clamp(1.9rem, 2.5vw, 2.7rem);
+        font-size: clamp(2rem, 5vw, 3rem);
         font-weight: 800;
         color: #0F172A;
         margin: 0 0 0.45rem 0;
@@ -101,7 +106,7 @@ st.markdown(
         line-height: 1.08;
     }
     .welcome-title h2 {
-        font-size: clamp(1.05rem, 1.6vw, 1.35rem);
+        font-size: clamp(1.08rem, 2.1vw, 1.4rem);
         font-weight: 700;
         color: #0E7C7B;
         margin: 0 0 0.5rem 0;
@@ -111,18 +116,18 @@ st.markdown(
     .welcome-title p {
         font-size: 0.92rem;
         color: #64748B;
-        margin: 0 0 2rem 0;
+        margin: 0 0 1.5rem 0;
         text-align: center;
         font-weight: 600;
     }
     .welcome-card {
-        background: rgba(255, 255, 255, 0.74);
+        background: rgba(255, 255, 255, 0.78);
         backdrop-filter: blur(8px);
         border: 1px solid rgba(14, 124, 123, 0.12);
-        border-radius: 20px;
-        padding: 1.45rem 1.25rem;
-        margin-bottom: 1.75rem;
-        width: min(760px, 100%);
+        border-radius: 22px;
+        padding: 1.2rem 1rem;
+        margin-bottom: 1.5rem;
+        width: min(760px, calc(100% - 1rem));
         box-shadow: 0 18px 40px rgba(14, 124, 123, 0.08);
     }
     .welcome-pill {
@@ -133,7 +138,10 @@ st.markdown(
         font-size: 0.9rem;
         font-weight: 600;
         color: #1E293B;
-        padding: 0.42rem 0;
+        padding: 0.48rem 0.7rem;
+        border-radius: 12px;
+        background: rgba(14, 124, 123, 0.04);
+        margin: 0.2rem 0;
     }
     div[data-testid="stButton"] > button[kind="primary"] {
         background: linear-gradient(135deg, #1CC2AF 0%, #0E7C7B 100%);
@@ -151,35 +159,36 @@ st.markdown(
         filter: saturate(1.08);
     }
 
-    .branding-container {
-        position: fixed;
-        top: 0.75rem;
-        right: 0.75rem;
-        z-index: 999;
-        display: flex;
-        align-items: center;
-        gap: 0.6rem;
-        background: rgba(255, 255, 255, 0.96);
-        backdrop-filter: blur(10px);
-        padding: 0.5rem 0.9rem;
-        border-radius: 12px;
-        box-shadow: 0 10px 22px rgba(14, 124, 123, 0.1);
-        border: 1px solid rgba(222, 226, 230, 0.8);
-    }
-    .branding-container img {
-        width: 32px; height: 32px; object-fit: contain;
-        border-radius: 6px; background: #F8F9FA; padding: 2px;
-        border: 1px solid #DEE2E6;
-    }
-    .branding-text {
-        display: flex; flex-direction: column; line-height: 1.2;
-        font-size: 0.68rem; white-space: nowrap;
-    }
-    .branding-text b { color: #0E7C7B; font-size: 0.72rem; }
-    .branding-text span { color: #6C757D; }
     @media (max-width: 640px) {
-        .welcome-logos img { width: min(300px, 82vw); }
-        .welcome-card { padding: 1.1rem 0.95rem; }
+        .welcome-wrap {
+            min-height: 100vh;
+            padding-top: 0.5rem;
+            padding-left: 0.6rem;
+            padding-right: 0.6rem;
+            justify-content: center;
+        }
+        .welcome-logos {
+            margin-bottom: 0.8rem;
+        }
+        .welcome-logos img {
+            width: min(320px, 76vw);
+        }
+        .welcome-title h1 {
+            font-size: clamp(1.8rem, 9vw, 2.5rem);
+        }
+        .welcome-card {
+            padding: 0.9rem 0.7rem;
+            border-radius: 18px;
+        }
+        .welcome-pill {
+            font-size: 0.82rem;
+            padding: 0.45rem 0.55rem;
+        }
+        div[data-testid="stButton"] > button[kind="primary"] {
+            width: 100%;
+            border-radius: 14px;
+            padding: 0.85rem 1rem;
+        }
     }
     </style>
     """,
