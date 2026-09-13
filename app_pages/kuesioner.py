@@ -149,17 +149,11 @@ with st.form("kuesioner_form", border=False):
     c1, c2 = st.columns(2)
     with c1:
         nama_pasien = st.text_input(
-            "Nama Pasien (opsional)", placeholder="Contoh: Budi"
+            "Nama Pasien", placeholder="Contoh: Budi"
         )
-        u1, u2 = st.columns([2, 1])
-        with u1:
-            umur_input = st.text_input(
-                "Umur Pasien", placeholder="Contoh: 2"
-            )
-        with u2:
-            satuan_umur = st.selectbox(
-                "Kategori", options=SATUAN_UMUR_OPTIONS, index=0
-            )
+        umur_input = st.text_input(
+            "Umur Pasien", placeholder="Contoh: 2 Bulan"
+        )
     with c2:
         jenis_kelamin = st.selectbox(
             "Jenis Kelamin", options=JENIS_KELAMIN_OPTIONS, index=None,
@@ -233,7 +227,7 @@ if submitted:
             "respondent_code": generate_respondent_code(),
             "nama_pasien": nama_pasien.strip() if nama_pasien else None,
             "umur": int(umur_value),
-            "umur_satuan": satuan_umur.lower(),
+            "umur_satuan": "tahun",
             "jenis_kelamin": jenis_kelamin,
             "lama_dirawat": lama_dirawat,
             "saran": saran.strip() if saran else None,
