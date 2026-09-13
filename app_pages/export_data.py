@@ -61,13 +61,18 @@ if lama_filter:
     filtered = filtered[filtered["lama_dirawat"].isin(lama_filter)]
 
 filtered["umur_display"] = filtered.apply(lambda r: format_umur(r["umur"], r.get("umur_satuan", "tahun")), axis=1)
+export_df = filtered.copy()
+for col in ["umur", "umur_satuan"]:
+    if col in export_df.columns:
+        export_df = export_df.drop(columns=[col])
+export_df = export_df.rename(columns={"umur_display": "Umur"})
 
 st.caption(f"{len(filtered)} baris siap diunduh (dari total {len(df)}).")
-st.dataframe(filtered[[c for c in filtered.columns if c != "umur"] + ["umur_display"]], use_container_width=True, hide_index=True, height=280)
+st.dataframe(export_df, use_container_width=True, hide_index=True, height=280)
 
 col1, col2 = st.columns(2)
 with col1:
-    csv_bytes = filtered.to_csv(index=False).encode("utf-8-sig")
+    csv_bytes = export_df.to_csv(index=False).encode("utf-8-sig")
     st.download_button(
         "Download CSV",
         data=csv_bytes,
@@ -79,7 +84,7 @@ with col1:
     )
 with col2:
     try:
-        excel_df = filtered.copy()
+        excel_df = export_df.copy()
         if "created_at" in excel_df.columns:
             excel_df["created_at"] = excel_df["created_at"].dt.tz_localize(None)
         buffer = io.BytesIO()
