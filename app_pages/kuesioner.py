@@ -158,7 +158,7 @@ with st.form("kuesioner_form", border=False):
             )
         with u2:
             satuan_umur = st.selectbox(
-                "Satuan", options=SATUAN_UMUR_OPTIONS, index=0
+                "Kategori", options=SATUAN_UMUR_OPTIONS, index=0
             )
     with c2:
         jenis_kelamin = st.selectbox(
