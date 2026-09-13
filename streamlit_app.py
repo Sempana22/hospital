@@ -196,7 +196,6 @@ def render_welcome_screen() -> None:
             <div class="welcome-title">
                 <h1>Kuesioner Kepuasan Pasien</h1>
                 <h2>Ruang Anak Rawat Inap Parkit</h2>
-                <p>RSUD SLG Kediri &mdash; STIKES Karya Husada Kediri</p>
             </div>
             <div class="welcome-card">
                 <div class="welcome-pill">⏱️&nbsp; Pengisian singkat, sekitar 3&ndash;5 menit</div>

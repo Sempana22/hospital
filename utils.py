@@ -109,7 +109,7 @@ def generate_respondent_code() -> str:
     return f"R-{date_part}-{rand_part}"
 
 
-def umur_group(umur: int) -> str:
+def umur_group(umur: int | float) -> str:
     """Bucket a patient's age (in years) into a readable group label."""
     if umur is None:
         return "-"

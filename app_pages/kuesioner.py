@@ -58,6 +58,14 @@ st.markdown(
         margin: 1.25rem 0 0.25rem 0;
         font-weight: 700; color: #0E7C7B; font-size: 1.02rem;
     }
+    .stNumberInput input[type="number"]::-webkit-outer-spin-button,
+    .stNumberInput input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    .stNumberInput input[type="number"] {
+        -moz-appearance: textfield;
+    }
     </style>
     """,
     unsafe_allow_html=True,
@@ -90,10 +98,34 @@ with st.form("kuesioner_form", border=False):
         nama_pasien = st.text_input(
             "Nama Pasien (opsional)", placeholder="Contoh: Budi"
         )
-        umur = st.number_input(
-            "Umur Pasien (tahun)", min_value=0, max_value=18, step=1, value=None,
-            placeholder="Masukkan umur",
+        umur_tahun = st.number_input(
+            "Umur Pasien (tahun)",
+            min_value=0,
+            max_value=18,
+            step=1,
+            value=None,
+            format="%d",
+            placeholder="Contoh: 1",
+            help="Isi umur dalam tahun bila pasien sudah berusia 1 tahun atau lebih.",
         )
+        umur_bulan = st.number_input(
+            "Umur Pasien (bulan)",
+            min_value=0,
+            max_value=11,
+            step=1,
+            value=None,
+            format="%d",
+            placeholder="Contoh: 6 untuk 6 bulan",
+            help="Isi umur dalam bulan bila pasien masih di bawah 1 tahun.",
+        )
+        umur = None
+        if umur_tahun is not None or umur_bulan is not None:
+            tahun = umur_tahun or 0
+            bulan = umur_bulan or 0
+            umur = tahun + (bulan / 12.0)
+            if umur > 18:
+                st.error("Umur maksimal 18 tahun.")
+                umur = None
     with c2:
         jenis_kelamin = st.selectbox(
             "Jenis Kelamin", options=JENIS_KELAMIN_OPTIONS, index=None,
@@ -158,7 +190,7 @@ if submitted:
         payload = {
             "respondent_code": generate_respondent_code(),
             "nama_pasien": nama_pasien.strip() if nama_pasien else None,
-            "umur": int(umur),
+            "umur": float(umur),
             "jenis_kelamin": jenis_kelamin,
             "lama_dirawat": lama_dirawat,
             "saran": saran.strip() if saran else None,

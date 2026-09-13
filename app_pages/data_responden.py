@@ -27,7 +27,8 @@ if not data:
     st.stop()
 
 df = pd.DataFrame(data)
-df["created_at"] = pd.to_datetime(df["created_at"], errors="coerce")
+df["created_at"] = pd.to_datetime(df["created_at"], errors="coerce", utc=True)
+df["created_at"] = df["created_at"].dt.tz_convert("Asia/Jakarta")
 df["kelompok_umur"] = df["umur"].apply(umur_group)
 
 c1, c2, c3, c4 = st.columns([2, 1, 1, 1])
@@ -79,3 +80,31 @@ st.dataframe(
         "saran": "Saran/Kritik",
     },
 )
+
+st.divider()
+st.subheader(":material/delete_forever: Hapus Data Responden")
+
+codes = filtered["respondent_code"].dropna().unique().tolist()
+selected_code = st.selectbox(
+    "Pilih kode responden yang ingin dihapus",
+    options=codes,
+    index=None,
+    placeholder="Pilih kode responden...",
+)
+
+if selected_code:
+    st.warning(
+        "Data yang dihapus tidak dapat dikembalikan. Pastikan Anda memilih kode yang benar."
+    )
+    if st.button("Hapus data terpilih", type="secondary", use_container_width=True):
+        try:
+            deleted = database.delete_response_by_code(selected_code)
+            if deleted:
+                st.success(f"Data responden dengan kode {selected_code} berhasil dihapus.")
+                st.rerun()
+            else:
+                st.error("Data tidak ditemukan atau gagal dihapus.")
+        except ValueError as exc:
+            st.error(f":material/error: {exc}")
+        except RuntimeError as exc:
+            st.error(f":material/error: {exc}")

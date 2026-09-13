@@ -1,5 +1,6 @@
 """Supabase database connection and query functions."""
 
+from datetime import datetime, timezone
 from urllib.parse import urlparse
 from uuid import UUID
 
@@ -67,9 +68,13 @@ def get_client() -> Client:
 
 def insert_response(data: dict) -> dict:
     """Insert a questionnaire response into the 'responses' table."""
+    payload = dict(data)
+    if "created_at" not in payload or payload["created_at"] is None:
+        payload["created_at"] = datetime.now(timezone.utc).isoformat()
+
     client = get_client()
     try:
-        result = client.table("responses").insert(data).execute()
+        result = client.table("responses").insert(payload).execute()
         return result.data[0] if result.data else {}
     except Exception as exc:  # noqa: BLE001
         raise RuntimeError(f"Gagal menyimpan data ke database: {exc}") from exc
@@ -121,3 +126,21 @@ def fetch_feedback() -> list[dict]:
         return result.data or []
     except Exception as exc:  # noqa: BLE001
         raise RuntimeError(f"Gagal mengambil data saran/kritik: {exc}") from exc
+
+
+def delete_response_by_code(code: str) -> bool:
+    """Delete one respondent record by code."""
+    if not code or not code.strip():
+        raise ValueError("Kode responden wajib diisi.")
+
+    client = get_client()
+    try:
+        result = (
+            client.table("responses")
+            .delete()
+            .eq("respondent_code", code.strip())
+            .execute()
+        )
+        return bool(result.data)
+    except Exception as exc:  # noqa: BLE001
+        raise RuntimeError(f"Gagal menghapus data responden: {exc}") from exc

@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS responses (
     created_at      TIMESTAMPTZ DEFAULT NOW() NOT NULL,
     respondent_code TEXT NOT NULL,
     nama_pasien     TEXT,
-    umur            INT NOT NULL,
+    umur            NUMERIC(4,1) NOT NULL,
     jenis_kelamin   TEXT NOT NULL,
     lama_dirawat    TEXT NOT NULL,
     q1              INT NOT NULL CHECK (q1 BETWEEN 1 AND 5),
