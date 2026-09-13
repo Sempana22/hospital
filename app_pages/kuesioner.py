@@ -69,7 +69,7 @@ st.markdown(
     }
     .category-header {
         display: flex; align-items: center; gap: 0.5rem;
-        margin: 1.3rem 0 0.35rem 0;
+        margin: 1.5rem 0 0.6rem 0;
         font-weight: 800; color: #0E7C7B; font-size: 1.04rem;
         letter-spacing: -0.02em;
     }
@@ -77,24 +77,26 @@ st.markdown(
         background: rgba(255,255,255,0.72);
         border: 1px solid rgba(14, 124, 123, 0.08);
         border-radius: 22px;
-        padding: 1rem 0.9rem 0.4rem;
+        padding: 1.2rem 0.95rem 0.6rem;
         box-shadow: 0 12px 24px rgba(15, 23, 42, 0.04);
     }
     div[data-testid="stRadio"] {
         background: rgba(248, 252, 251, 0.9);
         border: 1px solid rgba(14, 124, 123, 0.08);
         border-radius: 16px;
-        padding: 0.45rem 0.55rem 0.15rem;
+        padding: 0.5rem 0.6rem 0.2rem;
     }
     [data-baseweb="radio-group"] > label {
         border-radius: 12px;
-        padding: 0.35rem 0.5rem;
+        padding: 0.42rem 0.5rem;
+        margin: 0.1rem 0;
     }
     div[data-testid="stTextInput"] > label,
     div[data-testid="stSelectbox"] > label,
     div[data-testid="stDateInput"] > label {
         font-weight: 700;
         color: #0F172A;
+        margin-bottom: 0.42rem;
     }
     div[data-testid="stTextInput"] > div,
     div[data-testid="stSelectbox"] > div {
@@ -110,6 +112,7 @@ st.markdown(
         background: rgba(255, 255, 255, 0.96) !important;
         color: #0F172A !important;
         font-weight: 500;
+        min-height: 48px;
     }
     div[data-testid="stTextInput"] input:focus,
     div[data-testid="stSelectbox"] select:focus,
@@ -135,7 +138,7 @@ st.markdown(
         width: 100%;
         max-width: 420px;
         display: block;
-        margin: 0.75rem auto 0.25rem auto;
+        margin: 0.9rem auto 0.25rem auto;
     }
 
     @media (max-width: 640px) {
@@ -159,7 +162,7 @@ st.markdown(
             opacity: 0.22;
         }
         div[data-testid="stForm"] {
-            padding: 0.8rem 0.65rem 0.25rem;
+            padding: 0.8rem 0.7rem 0.4rem;
             border-radius: 18px;
         }
         [data-baseweb="radio-group"] > label {
@@ -180,6 +183,9 @@ st.markdown(
         }
         div[data-testid="stFormSubmitButton"] > button {
             max-width: 100%;
+        }
+        .category-header {
+            margin-top: 1.2rem;
         }
     }
     </style>
@@ -227,10 +233,10 @@ with st.form("kuesioner_form", border=False):
         )
     with c4:
         satuan_umur = st.selectbox(
-            "Satuan",
+            "Kategori",
             options=SATUAN_UMUR_OPTIONS,
             index=0,
-            help="Pilih satuan umur pasien",
+            help="Pilih kategori umur pasien",
         )
     with c5:
         lama_dirawat = st.selectbox(

@@ -143,6 +143,11 @@ st.markdown(
         background: rgba(14, 124, 123, 0.04);
         margin: 0.2rem 0;
     }
+    div[data-testid="stButton"] {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
     div[data-testid="stButton"] > button[kind="primary"] {
         background: linear-gradient(135deg, #1CC2AF 0%, #0E7C7B 100%);
         border: none;
@@ -152,6 +157,7 @@ st.markdown(
         font-size: 1.04rem;
         box-shadow: 0 12px 26px rgba(14, 124, 123, 0.28);
         transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+        margin: 0 auto;
     }
     div[data-testid="stButton"] > button[kind="primary"]:hover {
         transform: translateY(-2px);
@@ -229,13 +235,14 @@ def render_welcome_screen() -> None:
         unsafe_allow_html=True,
     )
 
-    col1, col2, col3 = st.columns([1, 1.4, 1])
+    col1, col2, col3 = st.columns([1.2, 1.6, 1.2])
     with col2:
         if st.button(
             "Masuk",
             type="primary",
             icon=":material/arrow_forward:",
             use_container_width=False,
+            key="welcome_button",
         ):
             st.session_state["entered"] = True
             st.rerun()
