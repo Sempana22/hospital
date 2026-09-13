@@ -205,14 +205,25 @@ with st.form("kuesioner_form", border=False):
         nama_pasien = st.text_input(
             "Nama Pasien", placeholder="Contoh: Budi"
         )
-        umur_input = st.text_input(
-            "Umur Pasien", placeholder="Contoh: 2"
-        )
     with c2:
         jenis_kelamin = st.selectbox(
             "Jenis Kelamin", options=JENIS_KELAMIN_OPTIONS, index=None,
             placeholder="Pilih jenis kelamin",
         )
+
+    c3, c4, c5 = st.columns([1.5, 0.8, 1.5])
+    with c3:
+        umur_input = st.text_input(
+            "Umur Pasien", placeholder="Contoh: 2"
+        )
+    with c4:
+        satuan_umur = st.selectbox(
+            "Satuan",
+            options=SATUAN_UMUR_OPTIONS,
+            index=0,
+            help="Pilih satuan umur pasien",
+        )
+    with c5:
         lama_dirawat = st.selectbox(
             "Lama Dirawat", options=LAMA_DIRAWAT_OPTIONS, index=None,
             placeholder="Pilih lama perawatan",
@@ -277,7 +288,7 @@ if submitted:
         else:
             try:
                 umur_value = int(raw)
-                umur_satuan_value = "tahun"
+                umur_satuan_value = "tahun" if satuan_umur == "Tahun" else "bulan"
             except ValueError:
                 st.error("Umur Pasien harus berupa angka bulat, misalnya 2, 18, 2 bulan, atau 1 tahun 2 bulan.")
                 st.stop()
