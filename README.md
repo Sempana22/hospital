@@ -86,11 +86,12 @@ Salin `.streamlit/secrets.toml.example` menjadi `.streamlit/secrets.toml`, lalu 
 ```toml
 SUPABASE_URL = "https://your-project-id.supabase.co"
 SUPABASE_KEY = "your-anon-public-key"
+SUPABASE_SERVICE_ROLE_KEY = "your-service-role-key"
 ADMIN_USERNAME = "admin"
 ADMIN_PASSWORD = "ganti-password-ini"
 ```
 
-Ambil `SUPABASE_URL` dan `SUPABASE_KEY` dari **Settings → API** di dashboard Supabase.
+Ambil `SUPABASE_URL`, `SUPABASE_KEY`, dan `SUPABASE_SERVICE_ROLE_KEY` dari **Settings → API** di dashboard Supabase. Service role key hanya dipakai server untuk fitur hapus admin dan tidak boleh dibagikan atau dimasukkan ke kode frontend.
 
 **Penting:** Jangan pernah commit `secrets.toml` ke repository (sudah ada di `.gitignore`).
 
@@ -113,7 +114,7 @@ Buka `http://localhost:8501`. Klik **Masuk** untuk memulai kuesioner.
 ## 7. Login Admin
 
 Username & password sesuai `secrets.toml` (default contoh: `admin` / ganti sendiri).
-Login diperlukan untuk mengakses Dashboard, Data Responden, Statistik, Saran & Kritik, dan Export Data.
+Login diperlukan untuk mengakses Dashboard, Data Responden, Statistik, Saran & Kritik, dan Export Data. Penghapusan responden tersedia di halaman Data Responden setelah `SUPABASE_SERVICE_ROLE_KEY` ditambahkan ke Secrets.
 
 ## 8. Keamanan Data
 

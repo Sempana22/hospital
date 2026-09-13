@@ -79,3 +79,33 @@ st.dataframe(
         "saran": "Saran/Kritik",
     },
 )
+
+st.divider()
+st.markdown("#### :material/delete: Hapus Data Responden")
+st.caption("Penghapusan bersifat permanen dan tidak dapat dibatalkan.")
+
+delete_options = filtered.sort_values("created_at", ascending=False).to_dict("records")
+selected = st.selectbox(
+    "Pilih responden",
+    delete_options,
+    format_func=lambda row: (
+        f"ID {row['id']} | {row.get('nama_pasien') or 'Tanpa nama'} | "
+        f"{row['created_at'].strftime('%d %b %Y, %H:%M')}"
+    ),
+)
+confirm_delete = st.checkbox("Saya memahami bahwa data ini akan dihapus permanen.")
+if st.button(
+    "Hapus Data Terpilih",
+    type="secondary",
+    icon=":material/delete:",
+    disabled=not confirm_delete,
+):
+    try:
+        with st.spinner("Menghapus data..."):
+            database.delete_response(int(selected["id"]))
+        st.success("Data responden berhasil dihapus.")
+        st.rerun()
+    except database.DatabaseConfigError as exc:
+        st.error(f":material/error: {exc}")
+    except RuntimeError as exc:
+        st.error(f":material/error: {exc}")

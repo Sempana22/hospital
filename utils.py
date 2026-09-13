@@ -114,7 +114,7 @@ def umur_group(umur: int) -> str:
     if umur is None:
         return "-"
     if umur < 1:
-        return "< 1 tahun"
+        return "1 bulan - 1 tahun"
     if umur <= 5:
         return "1-5 tahun"
     if umur <= 12:

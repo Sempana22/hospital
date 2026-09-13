@@ -65,6 +65,27 @@ def get_client() -> Client:
         raise DatabaseConfigError(f"Gagal terhubung ke Supabase: {exc}") from exc
 
 
+@st.cache_resource(show_spinner=False)
+def get_admin_client() -> Client:
+    """Create a server-side Supabase client for admin-only mutations."""
+    try:
+        url = st.secrets["SUPABASE_URL"]
+        service_key = st.secrets["SUPABASE_SERVICE_ROLE_KEY"]
+    except (KeyError, FileNotFoundError) as exc:
+        raise DatabaseConfigError(
+            "SUPABASE_SERVICE_ROLE_KEY belum diatur. Tambahkan service_role key "
+            "di Streamlit Secrets untuk mengaktifkan penghapusan data."
+        ) from exc
+
+    if not str(service_key).strip():
+        raise DatabaseConfigError("SUPABASE_SERVICE_ROLE_KEY tidak boleh kosong.")
+
+    try:
+        return create_client(url, service_key)
+    except Exception as exc:  # noqa: BLE001 - surface as config error
+        raise DatabaseConfigError(f"Gagal terhubung sebagai admin: {exc}") from exc
+
+
 def insert_response(data: dict) -> dict:
     """Insert a questionnaire response into the 'responses' table."""
     client = get_client()
@@ -121,3 +142,12 @@ def fetch_feedback() -> list[dict]:
         return result.data or []
     except Exception as exc:  # noqa: BLE001
         raise RuntimeError(f"Gagal mengambil data saran/kritik: {exc}") from exc
+
+
+def delete_response(response_id: int) -> None:
+    """Delete one response using the server-side admin client."""
+    client = get_admin_client()
+    try:
+        client.table("responses").delete().eq("id", response_id).execute()
+    except Exception as exc:  # noqa: BLE001
+        raise RuntimeError(f"Gagal menghapus data responden: {exc}") from exc

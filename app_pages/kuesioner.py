@@ -26,14 +26,25 @@ st.markdown(
     <style>
     .kuesioner-header {
         background: linear-gradient(135deg, #0E7C7B 0%, #14A098 100%);
-        border-radius: 18px;
-        padding: 1.75rem 1.5rem;
+        border-radius: 20px;
+        padding: 1.8rem 1.5rem;
         color: white;
         margin-bottom: 1.5rem;
-        box-shadow: 0 10px 24px rgba(14, 124, 123, 0.25);
+        box-shadow: 0 14px 28px rgba(14, 124, 123, 0.22);
+        border: 1px solid rgba(255,255,255,0.12);
     }
-    .kuesioner-header h1 { font-size: 1.4rem; margin: 0 0 0.3rem 0; font-weight: 800; }
-    .kuesioner-header p { margin: 0; opacity: 0.9; font-size: 0.92rem; }
+    .kuesioner-header h1 {
+        font-size: 1.5rem;
+        margin: 0 0 0.35rem 0;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+    }
+    .kuesioner-header p {
+        margin: 0;
+        opacity: 0.92;
+        font-size: 0.93rem;
+        line-height: 1.55;
+    }
     .home-watermark {
         position: relative;
         display: flex;
@@ -55,8 +66,31 @@ st.markdown(
     }
     .category-header {
         display: flex; align-items: center; gap: 0.5rem;
-        margin: 1.25rem 0 0.25rem 0;
-        font-weight: 700; color: #0E7C7B; font-size: 1.02rem;
+        margin: 1.3rem 0 0.35rem 0;
+        font-weight: 800; color: #0E7C7B; font-size: 1.04rem;
+        letter-spacing: -0.02em;
+    }
+    div[data-testid="stForm"] {
+        background: rgba(255,255,255,0.72);
+        border: 1px solid rgba(14, 124, 123, 0.08);
+        border-radius: 22px;
+        padding: 1rem 0.9rem 0.4rem;
+        box-shadow: 0 12px 24px rgba(15, 23, 42, 0.04);
+    }
+    div[data-testid="stRadio"] {
+        background: rgba(248, 252, 251, 0.9);
+        border: 1px solid rgba(14, 124, 123, 0.08);
+        border-radius: 16px;
+        padding: 0.45rem 0.55rem 0.15rem;
+    }
+    [data-baseweb="radio-group"] > label {
+        border-radius: 12px;
+        padding: 0.35rem 0.5rem;
+    }
+    div[data-testid="stButton"] > button[kind="primary"] {
+        border-radius: 14px;
+        font-weight: 800;
+        padding: 0.9rem 1.2rem;
     }
     </style>
     """,
@@ -90,9 +124,8 @@ with st.form("kuesioner_form", border=False):
         nama_pasien = st.text_input(
             "Nama Pasien (opsional)", placeholder="Contoh: Budi"
         )
-        umur = st.number_input(
-            "Umur Pasien (tahun)", min_value=0, max_value=18, step=1, value=None,
-            placeholder="Masukkan umur",
+        umur = st.text_input(
+            "Umur Pasien ", placeholder="Masukkan umur",
         )
     with c2:
         jenis_kelamin = st.selectbox(
@@ -139,7 +172,7 @@ with st.form("kuesioner_form", border=False):
 
 if submitted:
     missing = []
-    if umur is None:
+    if not umur.strip():
         missing.append("Umur Pasien")
     if not jenis_kelamin:
         missing.append("Jenis Kelamin")
@@ -158,7 +191,7 @@ if submitted:
         payload = {
             "respondent_code": generate_respondent_code(),
             "nama_pasien": nama_pasien.strip() if nama_pasien else None,
-            "umur": int(umur),
+            "umur": int(umur) if umur.strip().isdigit() else 0,
             "jenis_kelamin": jenis_kelamin,
             "lama_dirawat": lama_dirawat,
             "saran": saran.strip() if saran else None,

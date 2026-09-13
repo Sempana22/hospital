@@ -17,12 +17,6 @@ st.markdown(
     }
     .thanks-card h1 { color: #065F46; font-size: 1.6rem; margin: 0.5rem 0; }
     .thanks-card p { color: #047857; margin: 0; }
-    .code-chip {
-        display: inline-block; margin-top: 0.75rem;
-        background: white; border: 1px dashed #10B981;
-        border-radius: 10px; padding: 0.4rem 1rem;
-        font-family: monospace; font-weight: 700; color: #065F46;
-    }
     </style>
     """,
     unsafe_allow_html=True,
@@ -38,8 +32,6 @@ if not last_response:
         st.switch_page("app_pages/kuesioner.py")
     st.stop()
 
-code = last_response.get("respondent_code", "-")
-
 st.markdown(
     f"""
     <div class="thanks-card">
@@ -47,7 +39,6 @@ st.markdown(
         <h1>Terima Kasih!</h1>
         <p>Jawaban Anda telah berhasil kami terima dan sangat berarti bagi kami
         untuk terus meningkatkan pelayanan.</p>
-        <div class="code-chip">Kode Responden: {code}</div>
     </div>
     """,
     unsafe_allow_html=True,
