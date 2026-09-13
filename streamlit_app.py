@@ -151,32 +151,26 @@ st.markdown(
         margin: 0 auto;
     }
     div[data-testid="stButton"] > button[kind="primary"] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.55rem;
         background: linear-gradient(135deg, #1CC2AF 0%, #0E7C7B 100%);
         border: none;
         border-radius: 16px;
-        padding: 0.9rem 2rem;
+        padding: 0.92rem 2rem;
         font-weight: 800;
         font-size: 1.04rem;
         box-shadow: 0 12px 26px rgba(14, 124, 123, 0.28);
         transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
         margin: 0 auto;
-        width: min(220px, 58vw);
-        min-width: 180px;
-        max-width: 220px;
+        min-width: 190px;
+        width: min(220px, 72vw);
     }
     div[data-testid="stButton"] > button[kind="primary"]:hover {
         transform: translateY(-2px);
         box-shadow: 0 16px 30px rgba(14, 124, 123, 0.35);
         filter: saturate(1.08);
-    }
-    .welcome-actions {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        margin-top: 0.2rem;
-        margin-bottom: 0.2rem;
-        padding: 0.3rem 0;
     }
 
     @media (max-width: 640px) {
@@ -250,21 +244,21 @@ def render_welcome_screen() -> None:
         unsafe_allow_html=True,
     )
 
-    st.markdown('<div class="welcome-actions">', unsafe_allow_html=True)
-    if st.button(
-        "Masuk",
-        type="primary",
-        icon=":material/arrow_forward:",
-        use_container_width=False,
-        key="welcome_button",
-    ):
-        st.session_state["entered"] = True
-        st.rerun()
-    st.markdown("</div>", unsafe_allow_html=True)
+    cta_cols = st.columns([1.3, 1.2, 1.3])
+    with cta_cols[1]:
+        if st.button(
+            "Masuk",
+            type="primary",
+            icon=":material/arrow_forward:",
+            use_container_width=True,
+            key="welcome_button",
+        ):
+            st.session_state["entered"] = True
+            st.rerun()
 
     st.markdown(
         "<p style='text-align:center; color:#94A3B8; font-size:0.78rem; "
-        "margin-top:0.9rem; margin-bottom:0;'>Tekan tombol di atas untuk memulai</p>",
+        "margin-top:0.75rem; margin-bottom:0;'>Tekan tombol di atas untuk memulai</p>",
         unsafe_allow_html=True,
     )
 
