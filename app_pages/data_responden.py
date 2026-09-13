@@ -33,7 +33,10 @@ if "umur_satuan" not in df.columns:
     df["umur_satuan"] = "tahun"
 df["umur_satuan"] = df["umur_satuan"].fillna("tahun").astype(str).str.strip().str.lower()
 df["kelompok_umur"] = df.apply(lambda r: umur_group(r["umur"], r.get("umur_satuan", "tahun")), axis=1)
-df["umur_display"] = df["umur"].fillna(0).astype(int).astype(str)
+df["umur_display"] = df.apply(
+    lambda r: format_umur(r.get("umur"), r.get("umur_satuan", "tahun")),
+    axis=1,
+)
 
 c1, c2, c3, c4 = st.columns([2, 1, 1, 1])
 with c1:

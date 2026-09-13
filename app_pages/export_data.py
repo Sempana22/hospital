@@ -64,7 +64,10 @@ export_df = filtered.copy()
 if "umur_satuan" in export_df.columns:
     export_df = export_df.drop(columns=["umur_satuan"])
 if "umur" in export_df.columns:
-    export_df["Umur"] = export_df["umur"].fillna(0).astype(int).astype(str)
+    export_df["Umur"] = export_df.apply(
+        lambda r: format_umur(r.get("umur"), r.get("umur_satuan", "tahun")),
+        axis=1,
+    )
     export_df = export_df.drop(columns=["umur"])
 
 st.caption(f"{len(filtered)} baris siap diunduh (dari total {len(df)}).")
