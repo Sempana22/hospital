@@ -7,7 +7,7 @@ import streamlit as st
 
 import auth
 import database
-from utils import JENIS_KELAMIN_OPTIONS, LAMA_DIRAWAT_OPTIONS
+from utils import JENIS_KELAMIN_OPTIONS, LAMA_DIRAWAT_OPTIONS, format_umur
 
 auth.require_admin()
 
@@ -31,6 +31,10 @@ if not data:
 df = pd.DataFrame(data)
 df["created_at"] = pd.to_datetime(df["created_at"], errors="coerce")
 df["created_at"] = df["created_at"].dt.tz_convert("Asia/Jakarta")
+if "umur_satuan" not in df.columns:
+    df["umur_satuan"] = "tahun"
+df["umur_satuan"] = df["umur_satuan"].fillna("tahun").astype(str).str.strip().str.lower()
+df["umur_display"] = df.apply(lambda r: format_umur(r["umur"], r.get("umur_satuan", "tahun")), axis=1)
 
 c1, c2, c3 = st.columns(3)
 with c1:
@@ -56,8 +60,10 @@ if jk_filter:
 if lama_filter:
     filtered = filtered[filtered["lama_dirawat"].isin(lama_filter)]
 
+filtered["umur_display"] = filtered.apply(lambda r: format_umur(r["umur"], r.get("umur_satuan", "tahun")), axis=1)
+
 st.caption(f"{len(filtered)} baris siap diunduh (dari total {len(df)}).")
-st.dataframe(filtered, use_container_width=True, hide_index=True, height=280)
+st.dataframe(filtered[[c for c in filtered.columns if c != "umur"] + ["umur_display"]], use_container_width=True, hide_index=True, height=280)
 
 col1, col2 = st.columns(2)
 with col1:
