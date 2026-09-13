@@ -33,7 +33,7 @@ if "umur_satuan" not in df.columns:
     df["umur_satuan"] = "tahun"
 df["umur_satuan"] = df["umur_satuan"].fillna("tahun").astype(str).str.strip().str.lower()
 df["kelompok_umur"] = df.apply(lambda r: umur_group(r["umur"], r.get("umur_satuan", "tahun")), axis=1)
-df["umur_display"] = df.apply(lambda r: format_umur(r["umur"], r.get("umur_satuan", "tahun")), axis=1)
+df["umur_display"] = df["umur"].fillna(0).astype(int).astype(str)
 
 c1, c2, c3, c4 = st.columns([2, 1, 1, 1])
 with c1:
@@ -94,12 +94,12 @@ st.dataframe(
     height=600,
     column_config={
         "created_at": st.column_config.DatetimeColumn("Waktu", format="D MMM YYYY, HH:mm"),
-        "respondent_code": "Kode",
-        "nama_pasien": "Nama",
-        "umur_display": "Umur",
-        "jenis_kelamin": "Jenis Kelamin",
-        "lama_dirawat": "Lama Dirawat",
-        "saran": "Saran/Kritik",
+        "respondent_code": st.column_config.TextColumn("Kode", width="small"),
+        "nama_pasien": st.column_config.TextColumn("Nama", width="large"),
+        "umur_display": st.column_config.TextColumn("Umur", width="small"),
+        "jenis_kelamin": st.column_config.TextColumn("Jenis Kelamin", width="medium"),
+        "lama_dirawat": st.column_config.TextColumn("Lama Dirawat", width="medium"),
+        "saran": st.column_config.TextColumn("Saran/Kritik", width="large"),
     },
 )
 

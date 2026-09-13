@@ -60,12 +60,12 @@ if jk_filter:
 if lama_filter:
     filtered = filtered[filtered["lama_dirawat"].isin(lama_filter)]
 
-filtered["umur_display"] = filtered.apply(lambda r: format_umur(r["umur"], r.get("umur_satuan", "tahun")), axis=1)
 export_df = filtered.copy()
-for col in ["umur", "umur_satuan"]:
-    if col in export_df.columns:
-        export_df = export_df.drop(columns=[col])
-export_df = export_df.rename(columns={"umur_display": "Umur"})
+if "umur_satuan" in export_df.columns:
+    export_df = export_df.drop(columns=["umur_satuan"])
+if "umur" in export_df.columns:
+    export_df["Umur"] = export_df["umur"].fillna(0).astype(int).astype(str)
+    export_df = export_df.drop(columns=["umur"])
 
 st.caption(f"{len(filtered)} baris siap diunduh (dari total {len(df)}).")
 st.dataframe(export_df, use_container_width=True, hide_index=True, height=280)
