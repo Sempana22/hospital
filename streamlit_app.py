@@ -147,6 +147,7 @@ st.markdown(
         display: flex;
         justify-content: center;
         align-items: center;
+        width: 100%;
     }
     div[data-testid="stButton"] > button[kind="primary"] {
         background: linear-gradient(135deg, #1CC2AF 0%, #0E7C7B 100%);
@@ -158,6 +159,7 @@ st.markdown(
         box-shadow: 0 12px 26px rgba(14, 124, 123, 0.28);
         transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
         margin: 0 auto;
+        min-width: 180px;
     }
     div[data-testid="stButton"] > button[kind="primary"]:hover {
         transform: translateY(-2px);
@@ -193,10 +195,11 @@ st.markdown(
         }
         div[data-testid="stButton"] > button[kind="primary"] {
             display: block;
-            width: min(220px, 64vw);
+            width: auto;
+            min-width: 180px;
             margin: 0 auto;
             border-radius: 14px;
-            padding: 0.85rem 1rem;
+            padding: 0.85rem 1.2rem;
         }
     }
     </style>
