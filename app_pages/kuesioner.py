@@ -1,6 +1,7 @@
 """Halaman kuesioner — form utama yang diisi oleh pasien/orang tua/wali."""
 
 import base64
+import re
 from pathlib import Path
 
 import streamlit as st
@@ -206,17 +207,27 @@ if submitted:
     else:
         raw = str(umur_input).strip()
         normalized = raw.lower()
-        if "bulan" in normalized:
-            umur_satuan_value = "bulan"
-        elif "tahun" in normalized:
-            umur_satuan_value = "tahun"
 
-        cleaned = normalized.replace("bulan", "").replace("tahun", "").strip()
-        try:
-            umur_value = int(cleaned)
-        except ValueError:
-            st.error("Umur Pasien harus berupa angka bulat, misalnya 2 atau 18.")
-            st.stop()
+        year_match = re.search(r'(\d+)\s*(tahun|thn)', normalized)
+        month_match = re.search(r'(\d+)\s*(bulan|bln)', normalized)
+
+        if year_match and month_match:
+            total_months = int(year_match.group(1)) * 12 + int(month_match.group(1))
+            umur_value = total_months
+            umur_satuan_value = "bulan"
+        elif year_match:
+            umur_value = int(year_match.group(1))
+            umur_satuan_value = "tahun"
+        elif month_match:
+            umur_value = int(month_match.group(1))
+            umur_satuan_value = "bulan"
+        else:
+            try:
+                umur_value = int(raw)
+                umur_satuan_value = "tahun"
+            except ValueError:
+                st.error("Umur Pasien harus berupa angka bulat, misalnya 2, 18, 2 bulan, atau 1 tahun 2 bulan.")
+                st.stop()
 
     if not jenis_kelamin:
         missing.append("Jenis Kelamin")

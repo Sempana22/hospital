@@ -70,10 +70,28 @@ display_cols = [
 ]
 display_cols = [c for c in display_cols if c in filtered.columns]
 
+st.markdown(
+    """
+    <style>
+    .stDataFrame {
+        font-size: 12px;
+    }
+    .stDataFrame [data-testid="stDataFrameResizable"] {
+        max-height: none !important;
+    }
+    .stDataFrame .dataframe {
+        width: 100% !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 st.dataframe(
     filtered.sort_values("created_at", ascending=False)[display_cols],
     use_container_width=True,
     hide_index=True,
+    height=600,
     column_config={
         "created_at": st.column_config.DatetimeColumn("Waktu", format="D MMM YYYY, HH:mm"),
         "respondent_code": "Kode",
