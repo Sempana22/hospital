@@ -131,6 +131,12 @@ st.markdown(
         border: none;
         box-shadow: 0 12px 20px rgba(14, 124, 123, 0.22);
     }
+    div[data-testid="stFormSubmitButton"] > button {
+        width: 100%;
+        max-width: 420px;
+        display: block;
+        margin: 0.75rem auto 0.25rem auto;
+    }
 
     @media (max-width: 640px) {
         .kuesioner-header {
@@ -171,6 +177,9 @@ st.markdown(
             display: grid !important;
             grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
             gap: 0.5rem;
+        }
+        div[data-testid="stFormSubmitButton"] > button {
+            max-width: 100%;
         }
     }
     </style>

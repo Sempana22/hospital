@@ -71,9 +71,8 @@ st.markdown(
         align-items: center;
         justify-content: center;
         text-align: center;
-        padding: 1rem 1rem 2rem 1rem;
+        padding: 2rem 1rem 1.5rem 1rem;
         animation: fadeUp 0.45s ease;
-        width: 100%;
     }
     @keyframes fadeUp {
         0% { opacity: 0; transform: translateY(14px); }
@@ -83,25 +82,65 @@ st.markdown(
         display: flex;
         align-items: center;
         justify-content: center;
+        margin-bottom: 1.5rem;
         width: 100%;
-        margin-bottom: 1.2rem;
     }
     .welcome-logos img {
-        width: min(760px, 92vw);
-        max-height: 60vh;
+        width: min(640px, 88vw);
         height: auto;
         object-fit: contain;
         padding: 0;
         background: transparent;
         border: none;
         box-shadow: none;
-        filter: drop-shadow(0 10px 24px rgba(14, 124, 123, 0.08));
+        filter: drop-shadow(0 18px 30px rgba(14, 124, 123, 0.12));
     }
-    .welcome-title {
-        display: none;
+    .welcome-title h1 {
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: 800;
+        color: #0F172A;
+        margin: 0 0 0.45rem 0;
+        letter-spacing: -0.02em;
+        line-height: 1.08;
+        text-align: center;
+    }
+    .welcome-title h2 {
+        font-size: clamp(1.08rem, 2.1vw, 1.4rem);
+        font-weight: 700;
+        color: #0E7C7B;
+        margin: 0 0 0.5rem 0;
+        text-align: center;
+        letter-spacing: 0.01em;
+    }
+    .welcome-title p {
+        font-size: 0.92rem;
+        color: #64748B;
+        margin: 0 0 1.75rem 0;
+        text-align: center;
+        font-weight: 600;
     }
     .welcome-card {
-        display: none;
+        background: rgba(255, 255, 255, 0.78);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(14, 124, 123, 0.12);
+        border-radius: 22px;
+        padding: 1.2rem 1rem;
+        margin-bottom: 1.5rem;
+        width: min(760px, 100%);
+        box-shadow: 0 18px 40px rgba(14, 124, 123, 0.08);
+    }
+    .welcome-pill {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        text-align: left;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #1E293B;
+        padding: 0.48rem 0.7rem;
+        border-radius: 12px;
+        background: rgba(14, 124, 123, 0.04);
+        margin: 0.2rem 0;
     }
     div[data-testid="stButton"] > button[kind="primary"] {
         background: linear-gradient(135deg, #1CC2AF 0%, #0E7C7B 100%);
@@ -131,11 +170,21 @@ st.markdown(
             margin-bottom: 0.8rem;
         }
         .welcome-logos img {
-            width: min(700px, 92vw);
-            max-height: 52vh;
+            width: min(500px, 90vw);
+        }
+        .welcome-title h1 {
+            font-size: clamp(1.8rem, 9vw, 2.5rem);
+        }
+        .welcome-card {
+            padding: 0.9rem 0.7rem;
+            border-radius: 18px;
+        }
+        .welcome-pill {
+            font-size: 0.82rem;
+            padding: 0.45rem 0.55rem;
         }
         div[data-testid="stButton"] > button[kind="primary"] {
-            width: min(260px, 70vw);
+            width: min(240px, 72vw);
             border-radius: 14px;
             padding: 0.85rem 1rem;
         }
@@ -161,6 +210,16 @@ def render_welcome_screen() -> None:
             <div class="welcome-logos">
                 <img src="{LOGO_DATA_URI}" alt="Logo RSUD SLG Kediri" />
             </div>
+            <div class="welcome-title">
+                <h1>Kuesioner Kepuasan Pasien</h1>
+                <h2>Ruang Anak Rawat Inap Parkit</h2>
+                <p>RSUD SLG Kediri</p>
+            </div>
+            <div class="welcome-card">
+                <div class="welcome-pill">⏱️&nbsp; Pengisian singkat, sekitar 3&ndash;5 menit</div>
+                <div class="welcome-pill">🔒&nbsp; Data Anda tersimpan aman dan rahasia</div>
+                <div class="welcome-pill">💬&nbsp; Saran Anda sangat berarti bagi kami</div>
+            </div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -176,6 +235,12 @@ def render_welcome_screen() -> None:
         ):
             st.session_state["entered"] = True
             st.rerun()
+
+    st.markdown(
+        "<p style='text-align:center; color:#94A3B8; font-size:0.78rem; "
+        "margin-top:0.75rem;'>Tekan tombol di atas untuk memulai</p>",
+        unsafe_allow_html=True,
+    )
 
 
 # ═══════════════════════════════════════════════════════════════════════════
