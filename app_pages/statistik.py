@@ -29,6 +29,7 @@ if not data:
 
 df = pd.DataFrame(data)
 df["created_at"] = pd.to_datetime(df["created_at"], errors="coerce")
+df["created_at"] = df["created_at"].dt.tz_convert("Asia/Jakarta")
 question_cols = [q for q in QUESTIONS if q in df.columns]
 df["skor_keseluruhan"] = df[question_cols].mean(axis=1)
 

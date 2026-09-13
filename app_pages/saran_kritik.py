@@ -27,6 +27,7 @@ if not feedback:
 
 df = pd.DataFrame(feedback)
 df["created_at"] = pd.to_datetime(df["created_at"], errors="coerce")
+df["created_at"] = df["created_at"].dt.tz_convert("Asia/Jakarta")
 
 search = st.text_input("Cari dalam saran", placeholder="Ketik kata kunci...")
 filtered = df

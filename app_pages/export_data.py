@@ -30,6 +30,7 @@ if not data:
 
 df = pd.DataFrame(data)
 df["created_at"] = pd.to_datetime(df["created_at"], errors="coerce")
+df["created_at"] = df["created_at"].dt.tz_convert("Asia/Jakarta")
 
 c1, c2, c3 = st.columns(3)
 with c1:

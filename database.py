@@ -1,10 +1,19 @@
 """Supabase database connection and query functions."""
 
+from datetime import datetime
 from urllib.parse import urlparse
 from uuid import UUID
+from zoneinfo import ZoneInfo
 
 import streamlit as st
 from supabase import create_client, Client
+
+ASIA_JAKARTA = ZoneInfo("Asia/Jakarta")
+
+
+def local_now() -> datetime:
+    """Return the current timestamp in Asia/Jakarta local time."""
+    return datetime.now(ASIA_JAKARTA)
 
 
 class DatabaseConfigError(Exception):
@@ -88,9 +97,12 @@ def get_admin_client() -> Client:
 
 def insert_response(data: dict) -> dict:
     """Insert a questionnaire response into the 'responses' table."""
+    payload = dict(data)
+    payload["created_at"] = local_now().isoformat()
+
     client = get_client()
     try:
-        result = client.table("responses").insert(data).execute()
+        result = client.table("responses").insert(payload).execute()
         return result.data[0] if result.data else {}
     except Exception as exc:  # noqa: BLE001
         raise RuntimeError(f"Gagal menyimpan data ke database: {exc}") from exc
