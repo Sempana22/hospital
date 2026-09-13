@@ -71,7 +71,7 @@ st.markdown(
         align-items: center;
         justify-content: center;
         text-align: center;
-        padding: 2rem 1rem 1.5rem 1rem;
+        padding: 0.5rem 1rem 1.5rem 1rem;
         animation: fadeUp 0.45s ease;
     }
     @keyframes fadeUp {
@@ -82,6 +82,7 @@ st.markdown(
         display: flex;
         align-items: center;
         justify-content: center;
+        margin-top: -1.5rem;
         margin-bottom: 1.5rem;
         width: 100%;
     }
@@ -161,16 +162,17 @@ st.markdown(
     @media (max-width: 640px) {
         .welcome-wrap {
             min-height: 100vh;
-            padding-top: 0.5rem;
+            padding-top: 0.2rem;
             padding-left: 0.6rem;
             padding-right: 0.6rem;
             justify-content: center;
         }
         .welcome-logos {
+            margin-top: -2.2rem;
             margin-bottom: 0.8rem;
         }
         .welcome-logos img {
-            width: min(500px, 90vw);
+            width: min(500px, 92vw);
         }
         .welcome-title h1 {
             font-size: clamp(1.8rem, 9vw, 2.5rem);
@@ -184,7 +186,9 @@ st.markdown(
             padding: 0.45rem 0.55rem;
         }
         div[data-testid="stButton"] > button[kind="primary"] {
-            width: min(240px, 72vw);
+            display: block;
+            width: min(220px, 64vw);
+            margin: 0 auto;
             border-radius: 14px;
             padding: 0.85rem 1rem;
         }
@@ -231,7 +235,7 @@ def render_welcome_screen() -> None:
             "Masuk",
             type="primary",
             icon=":material/arrow_forward:",
-            use_container_width=True,
+            use_container_width=False,
         ):
             st.session_state["entered"] = True
             st.rerun()
