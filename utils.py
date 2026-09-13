@@ -109,10 +109,21 @@ def generate_respondent_code() -> str:
     return f"R-{date_part}-{rand_part}"
 
 
-def umur_group(umur: int) -> str:
-    """Bucket a patient's age (in years) into a readable group label."""
+def umur_group(umur: int, satuan: str = "tahun") -> str:
+    """Bucket a patient's age into a readable group label.
+
+    Age is stored as a numeric value with an explicit unit (``tahun`` or
+    ``bulan``). Values given in months are converted to years before grouping
+    so that a 2-month-old and a 0-year-old both land in the
+    ``"1 bulan - 1 tahun"`` bucket.
+    """
     if umur is None:
         return "-"
+    satuan = (satuan or "tahun").strip().lower()
+    if satuan not in {"tahun", "bulan"}:
+        satuan = "tahun"
+    if satuan == "bulan":
+        umur = umur / 12
     if umur < 1:
         return "1 bulan - 1 tahun"
     if umur <= 5:
@@ -120,3 +131,14 @@ def umur_group(umur: int) -> str:
     if umur <= 12:
         return "6-12 tahun"
     return "> 12 tahun"
+
+
+def format_umur(umur: int, satuan: str = "tahun") -> str:
+    """Return a human-readable age string, e.g. ``"2 Bulan"`` or ``"5 Tahun"``."""
+    if umur is None:
+        return "-"
+    satuan = (satuan or "tahun").strip().lower()
+    if satuan not in {"tahun", "bulan"}:
+        satuan = "tahun"
+    label = "Bulan" if satuan == "bulan" else "Tahun"
+    return f"{int(umur)} {label}"

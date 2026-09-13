@@ -15,6 +15,8 @@ from utils import (
     generate_respondent_code,
 )
 
+SATUAN_UMUR_OPTIONS = ["Tahun", "Bulan"]
+
 LOGO_PATH = Path(__file__).resolve().parent.parent / "images__1_-removebg-preview.png"
 LOGO_DATA_URI = (
     "data:image/png;base64,"
@@ -87,6 +89,31 @@ st.markdown(
         border-radius: 12px;
         padding: 0.35rem 0.5rem;
     }
+    div[data-testid="stTextInput"] > label,
+    div[data-testid="stSelectbox"] > label,
+    div[data-testid="stDateInput"] > label {
+        font-weight: 700;
+        color: #0F172A;
+    }
+    div[data-testid="stTextInput"] > div,
+    div[data-testid="stSelectbox"] > div {
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid rgba(14, 124, 123, 0.18);
+        border-radius: 14px;
+        box-shadow: 0 8px 18px rgba(15, 23, 42, 0.05);
+    }
+    div[data-testid="stTextInput"] input,
+    div[data-testid="stSelectbox"] select {
+        border-radius: 14px !important;
+        background: rgba(255, 255, 255, 0.96) !important;
+        color: #0F172A !important;
+        font-weight: 500;
+    }
+    div[data-testid="stTextInput"] input:focus,
+    div[data-testid="stSelectbox"] select:focus {
+        border-color: rgba(14, 124, 123, 0.8) !important;
+        box-shadow: 0 0 0 3px rgba(20, 160, 152, 0.16) !important;
+    }
     div[data-testid="stButton"] > button[kind="primary"] {
         border-radius: 14px;
         font-weight: 800;
@@ -124,9 +151,15 @@ with st.form("kuesioner_form", border=False):
         nama_pasien = st.text_input(
             "Nama Pasien (opsional)", placeholder="Contoh: Budi"
         )
-        umur = st.text_input(
-            "Umur Pasien ", placeholder="Masukkan umur",
-        )
+        u1, u2 = st.columns([2, 1])
+        with u1:
+            umur_input = st.text_input(
+                "Umur Pasien", placeholder="Contoh: 2"
+            )
+        with u2:
+            satuan_umur = st.selectbox(
+                "Satuan", options=SATUAN_UMUR_OPTIONS, index=0
+            )
     with c2:
         jenis_kelamin = st.selectbox(
             "Jenis Kelamin", options=JENIS_KELAMIN_OPTIONS, index=None,
@@ -172,8 +205,16 @@ with st.form("kuesioner_form", border=False):
 
 if submitted:
     missing = []
-    if not umur.strip():
+    umur_value = None
+    if umur_input is None or not str(umur_input).strip():
         missing.append("Umur Pasien")
+    else:
+        try:
+            umur_value = int(str(umur_input).strip())
+        except ValueError:
+            st.error("Umur Pasien harus berupa angka bulat, misalnya 2 atau 18.")
+            st.stop()
+
     if not jenis_kelamin:
         missing.append("Jenis Kelamin")
     if not lama_dirawat:
@@ -191,7 +232,8 @@ if submitted:
         payload = {
             "respondent_code": generate_respondent_code(),
             "nama_pasien": nama_pasien.strip() if nama_pasien else None,
-            "umur": int(umur) if umur.strip().isdigit() else 0,
+            "umur": int(umur_value),
+            "umur_satuan": satuan_umur.lower(),
             "jenis_kelamin": jenis_kelamin,
             "lama_dirawat": lama_dirawat,
             "saran": saran.strip() if saran else None,

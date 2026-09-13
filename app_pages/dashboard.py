@@ -13,6 +13,7 @@ from utils import (
     JENIS_KELAMIN_OPTIONS,
     LAMA_DIRAWAT_OPTIONS,
     QUESTIONS,
+    format_umur,
     interpret_score,
     umur_group,
 )
@@ -39,7 +40,10 @@ if not data:
 df = pd.DataFrame(data)
 df["created_at"] = pd.to_datetime(df["created_at"], errors="coerce")
 df["created_at"] = df["created_at"].dt.tz_convert("Asia/Jakarta")
-df["kelompok_umur"] = df["umur"].apply(umur_group)
+if "umur_satuan" not in df.columns:
+    df["umur_satuan"] = "tahun"
+df["umur_satuan"] = df["umur_satuan"].fillna("tahun").astype(str).str.strip().str.lower()
+df["kelompok_umur"] = df.apply(lambda r: umur_group(r["umur"], r.get("umur_satuan", "tahun")), axis=1)
 question_cols = [q for q in QUESTIONS if q in df.columns]
 df["skor_keseluruhan"] = df[question_cols].mean(axis=1)
 
@@ -134,8 +138,9 @@ fig3.update_traces(marker_color=CHART_COLORS["primary"])
 fig3.update_layout(height=420, margin=dict(l=0, r=10, t=10, b=0))
 st.plotly_chart(fig3, use_container_width=True)
 
+filtered["umur_display"] = filtered.apply(lambda r: format_umur(r["umur"], r.get("umur_satuan", "tahun")), axis=1)
 st.markdown("##### Data Responden Terbaru")
-show_cols = ["respondent_code", "created_at", "nama_pasien", "umur", "jenis_kelamin", "lama_dirawat", "skor_keseluruhan"]
+show_cols = ["respondent_code", "created_at", "nama_pasien", "umur_display", "jenis_kelamin", "lama_dirawat", "skor_keseluruhan"]
 show_cols = [c for c in show_cols if c in filtered.columns]
 st.dataframe(
     filtered.sort_values("created_at", ascending=False)[show_cols].head(10),

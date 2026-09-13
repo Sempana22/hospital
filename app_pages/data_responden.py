@@ -5,7 +5,7 @@ import streamlit as st
 
 import auth
 import database
-from utils import JENIS_KELAMIN_OPTIONS, LAMA_DIRAWAT_OPTIONS, QUESTIONS, umur_group
+from utils import JENIS_KELAMIN_OPTIONS, LAMA_DIRAWAT_OPTIONS, QUESTIONS, format_umur, umur_group
 
 auth.require_admin()
 
@@ -29,7 +29,11 @@ if not data:
 df = pd.DataFrame(data)
 df["created_at"] = pd.to_datetime(df["created_at"], errors="coerce")
 df["created_at"] = df["created_at"].dt.tz_convert("Asia/Jakarta")
-df["kelompok_umur"] = df["umur"].apply(umur_group)
+if "umur_satuan" not in df.columns:
+    df["umur_satuan"] = "tahun"
+df["umur_satuan"] = df["umur_satuan"].fillna("tahun").astype(str).str.strip().str.lower()
+df["kelompok_umur"] = df.apply(lambda r: umur_group(r["umur"], r.get("umur_satuan", "tahun")), axis=1)
+df["umur_display"] = df.apply(lambda r: format_umur(r["umur"], r.get("umur_satuan", "tahun")), axis=1)
 
 c1, c2, c3, c4 = st.columns([2, 1, 1, 1])
 with c1:
@@ -61,7 +65,7 @@ st.caption(f"Menampilkan {len(filtered)} dari {len(df)} total responden.")
 
 question_cols = [q for q in QUESTIONS if q in filtered.columns]
 display_cols = [
-    "respondent_code", "created_at", "nama_pasien", "umur", "jenis_kelamin",
+    "respondent_code", "created_at", "nama_pasien", "umur_display", "jenis_kelamin",
     "lama_dirawat", *question_cols, "saran",
 ]
 display_cols = [c for c in display_cols if c in filtered.columns]
@@ -74,7 +78,7 @@ st.dataframe(
         "created_at": st.column_config.DatetimeColumn("Waktu", format="D MMM YYYY, HH:mm"),
         "respondent_code": "Kode",
         "nama_pasien": "Nama",
-        "umur": "Umur",
+        "umur_display": "Umur",
         "jenis_kelamin": "Jenis Kelamin",
         "lama_dirawat": "Lama Dirawat",
         "saran": "Saran/Kritik",

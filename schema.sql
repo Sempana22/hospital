@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS responses (
     respondent_code TEXT NOT NULL,
     nama_pasien     TEXT,
     umur            INT NOT NULL,
+    umur_satuan     TEXT NOT NULL DEFAULT 'tahun',
     jenis_kelamin   TEXT NOT NULL,
     lama_dirawat    TEXT NOT NULL,
     q1              INT NOT NULL CHECK (q1 BETWEEN 1 AND 5),
@@ -30,6 +31,10 @@ CREATE TABLE IF NOT EXISTS responses (
 -- Migration for databases created before q12 was added.
 ALTER TABLE responses
     ADD COLUMN IF NOT EXISTS q12 INT CHECK (q12 BETWEEN 1 AND 5);
+
+-- Migration for databases created before umur_satuan was added.
+ALTER TABLE responses
+    ADD COLUMN IF NOT EXISTS umur_satuan TEXT NOT NULL DEFAULT 'tahun';
 
 -- 2. Index on created_at for time-based queries
 CREATE INDEX IF NOT EXISTS idx_responses_created_at ON responses (created_at DESC);

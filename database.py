@@ -96,7 +96,12 @@ def get_admin_client() -> Client:
 
 
 def insert_response(data: dict) -> dict:
-    """Insert a questionnaire response into the 'responses' table."""
+    """Insert a questionnaire response into the 'responses' table.
+
+    Be backward-compatible with databases that do not yet have the
+    ``umur_satuan`` column. If the remote schema is older, retry without that
+    field instead of failing the whole submission.
+    """
     payload = dict(data)
     payload["created_at"] = local_now().isoformat()
 
@@ -105,6 +110,16 @@ def insert_response(data: dict) -> dict:
         result = client.table("responses").insert(payload).execute()
         return result.data[0] if result.data else {}
     except Exception as exc:  # noqa: BLE001
+        error_text = str(exc)
+        if "umur_satuan" in error_text and "schema cache" in error_text:
+            payload.pop("umur_satuan", None)
+            try:
+                result = client.table("responses").insert(payload).execute()
+                return result.data[0] if result.data else {}
+            except Exception as retry_exc:  # noqa: BLE001
+                raise RuntimeError(
+                    f"Gagal menyimpan data ke database: {retry_exc}"
+                ) from retry_exc
         raise RuntimeError(f"Gagal menyimpan data ke database: {exc}") from exc
 
 
