@@ -29,11 +29,11 @@ st.markdown(
     <style>
     .kuesioner-header {
         background: linear-gradient(135deg, #0E7C7B 0%, #14A098 100%);
-        border-radius: 20px;
+        border-radius: 24px;
         padding: 1.8rem 1.5rem;
         color: white;
         margin-bottom: 1.5rem;
-        box-shadow: 0 14px 28px rgba(14, 124, 123, 0.22);
+        box-shadow: 0 18px 38px rgba(14, 124, 123, 0.22);
         border: 1px solid rgba(255,255,255,0.12);
     }
     .kuesioner-header h1 {
@@ -74,22 +74,28 @@ st.markdown(
         letter-spacing: -0.02em;
     }
     div[data-testid="stForm"] {
-        background: rgba(255,255,255,0.72);
+        background: rgba(255,255,255,0.78);
         border: 1px solid rgba(14, 124, 123, 0.08);
-        border-radius: 22px;
-        padding: 1.2rem 0.95rem 0.6rem;
-        box-shadow: 0 12px 24px rgba(15, 23, 42, 0.04);
+        border-radius: 26px;
+        padding: 1.3rem 1rem 0.8rem;
+        box-shadow: 0 18px 32px rgba(15, 23, 42, 0.06);
+        backdrop-filter: blur(8px);
     }
     div[data-testid="stRadio"] {
-        background: rgba(248, 252, 251, 0.9);
-        border: 1px solid rgba(14, 124, 123, 0.08);
-        border-radius: 16px;
-        padding: 0.5rem 0.6rem 0.2rem;
+        background: linear-gradient(180deg, rgba(248, 252, 251, 0.96), rgba(236, 249, 247, 0.86));
+        border: 1px solid rgba(14, 124, 123, 0.10);
+        border-radius: 18px;
+        padding: 0.6rem 0.7rem 0.35rem;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
     }
     [data-baseweb="radio-group"] > label {
         border-radius: 12px;
-        padding: 0.42rem 0.5rem;
-        margin: 0.1rem 0;
+        padding: 0.5rem 0.6rem;
+        margin: 0.12rem 0;
+        transition: background-color 0.18s ease, border-color 0.18s ease;
+    }
+    [data-baseweb="radio-group"] > label:hover {
+        background: rgba(14, 124, 123, 0.04);
     }
     div[data-testid="stTextInput"] > label,
     div[data-testid="stSelectbox"] > label,

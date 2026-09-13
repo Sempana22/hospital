@@ -9,8 +9,66 @@ from utils import JENIS_KELAMIN_OPTIONS, LAMA_DIRAWAT_OPTIONS, QUESTIONS, format
 
 auth.require_admin()
 
-st.markdown("## :material/people: Data Responden")
-st.caption("Seluruh jawaban kuesioner yang telah masuk ke database.")
+st.markdown(
+    """
+    <style>
+    .admin-page-header {
+        background: linear-gradient(135deg, rgba(10,77,76,0.96), rgba(15,113,109,0.94), rgba(20,160,152,0.9));
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 26px;
+        padding: 1.25rem 1.4rem 1.1rem;
+        margin-bottom: 1rem;
+        color: white;
+        box-shadow: 0 18px 36px rgba(14,124,123,0.16);
+    }
+    .admin-page-header h2 {
+        margin: 0;
+        font-size: clamp(1.4rem, 2.2vw, 1.9rem);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+    }
+    .admin-page-header p {
+        margin: 0.45rem 0 0;
+        color: rgba(255,255,255,0.82);
+        font-size: 0.82rem;
+        font-weight: 600;
+    }
+    .filter-shell {
+        background: rgba(255,255,255,0.7);
+        border: 1px solid rgba(14,124,123,0.08);
+        border-radius: 20px;
+        padding: 0.85rem 0.9rem 0.15rem;
+        box-shadow: 0 12px 26px rgba(15,23,42,0.04);
+        margin-bottom: 1rem;
+    }
+    .data-panel {
+        background: rgba(255,255,255,0.7);
+        border: 1px solid rgba(14,124,123,0.08);
+        border-radius: 20px;
+        padding: 0.9rem;
+        box-shadow: 0 14px 28px rgba(15,23,42,0.04);
+    }
+    .danger-panel {
+        background: linear-gradient(135deg, rgba(254,242,242,0.7), rgba(255,255,255,0.7));
+        border: 1px solid rgba(239,68,68,0.14);
+        border-radius: 20px;
+        padding: 1rem 1rem 0.4rem;
+        box-shadow: 0 12px 26px rgba(239,68,68,0.05);
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+st.markdown(
+    """
+    <div class="admin-page-header">
+        <h2>👥 Data Responden</h2>
+        <p>Seluruh jawaban kuesioner yang telah masuk ke database.</p>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
 try:
     with st.spinner("Memuat data..."):
@@ -42,6 +100,7 @@ for column in ["respondent_code", "nama_pasien", "jenis_kelamin", "lama_dirawat"
     if column in df.columns:
         df[column] = df[column].fillna("").astype(str).str.replace(r"\s+", " ", regex=True).str.strip()
 
+st.markdown('<div class="filter-shell">', unsafe_allow_html=True)
 c1, c2, c3, c4 = st.columns([2.2, 1.3, 1.2, 1.3])
 with c1:
     search = st.text_input(
@@ -54,6 +113,7 @@ with c3:
     lama_filter = st.multiselect("Lama Dirawat", options=LAMA_DIRAWAT_OPTIONS)
 with c4:
     umur_filter = st.multiselect("Kelompok Umur", options=sorted(df["kelompok_umur"].unique()))
+st.markdown('</div>', unsafe_allow_html=True)
 
 filtered = df.copy()
 if search:
@@ -69,7 +129,10 @@ if lama_filter:
 if umur_filter:
     filtered = filtered[filtered["kelompok_umur"].isin(umur_filter)]
 
-st.caption(f"Menampilkan {len(filtered)} dari {len(df)} total responden.")
+st.markdown(
+    f"<div style='margin:0.3rem 0 0.9rem; color:#0f172a; font-size:0.88rem; font-weight:700;'>Menampilkan <span style='color:#0e7c7b;'>{len(filtered)}</span> dari <span style='color:#0e7c7b;'>{len(df)}</span> total responden.</div>",
+    unsafe_allow_html=True,
+)
 
 question_cols = [q for q in QUESTIONS if q in filtered.columns]
 display_cols = [
@@ -96,11 +159,18 @@ st.markdown(
         padding-bottom: 0.6rem !important;
         vertical-align: top !important;
     }
+    .stDataFrame .dataframe tbody tr {
+        transition: background-color 0.18s ease;
+    }
+    .stDataFrame .dataframe tbody tr:hover {
+        background: rgba(14,124,123,0.04);
+    }
     </style>
     """,
     unsafe_allow_html=True,
 )
 
+st.markdown('<div class="data-panel">', unsafe_allow_html=True)
 sorted_data = filtered.sort_values("created_at", ascending=False)[display_cols].copy()
 if "saran" in sorted_data.columns:
     sorted_data["saran"] = sorted_data["saran"].fillna("").astype(str).str.replace(r"\s+", " ", regex=True)
@@ -120,10 +190,18 @@ st.dataframe(
         "saran": st.column_config.TextColumn("Saran/Kritik", width="large"),
     },
 )
+st.markdown('</div>', unsafe_allow_html=True)
 
 st.divider()
-st.markdown("#### :material/delete: Hapus Data Responden")
-st.caption("Penghapusan bersifat permanen dan tidak dapat dibatalkan.")
+st.markdown(
+    """
+    <div class="danger-panel">
+        <h4 style="margin:0 0 0.2rem; color:#0f172a;">🗑️ Hapus Data Responden</h4>
+        <div style="color:#475569; font-size:0.82rem;">Penghapusan bersifat permanen dan tidak dapat dibatalkan.</div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
 delete_options = filtered.sort_values("created_at", ascending=False).to_dict("records")
 selected = st.selectbox(

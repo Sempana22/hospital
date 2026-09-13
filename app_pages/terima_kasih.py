@@ -8,15 +8,32 @@ st.markdown(
     """
     <style>
     .thanks-card {
-        background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
-        border: 1px solid #A7F3D0;
-        border-radius: 18px;
+        background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+        border: 1px solid rgba(16, 185, 129, 0.2);
+        border-radius: 24px;
         padding: 2rem 1.5rem;
         text-align: center;
         margin-bottom: 1.5rem;
+        box-shadow: 0 20px 40px rgba(16, 185, 129, 0.12);
     }
-    .thanks-card h1 { color: #065F46; font-size: 1.6rem; margin: 0.5rem 0; }
-    .thanks-card p { color: #047857; margin: 0; }
+    .thanks-card h1 {
+        color: #065F46;
+        font-size: clamp(1.5rem, 2.6vw, 2.2rem);
+        margin: 0.65rem 0;
+        font-weight: 800;
+    }
+    .thanks-card p {
+        color: #047857;
+        margin: 0;
+        line-height: 1.6;
+    }
+    .summary-panel {
+        background: rgba(255,255,255,0.74);
+        border: 1px solid rgba(14, 124, 123, 0.1);
+        border-radius: 18px;
+        padding: 1rem 1rem 0.25rem;
+        box-shadow: 0 12px 24px rgba(15, 23, 42, 0.04);
+    }
     </style>
     """,
     unsafe_allow_html=True,
@@ -46,6 +63,7 @@ st.markdown(
 
 st.markdown("#### :material/summarize: Ringkasan Jawaban Anda")
 
+st.markdown('<div class="summary-panel">', unsafe_allow_html=True)
 rows = []
 for category, qkeys in CATEGORIES.items():
     scores = [last_response.get(q) for q in qkeys if last_response.get(q) is not None]
@@ -55,6 +73,8 @@ for category, qkeys in CATEGORIES.items():
 
 if rows:
     st.dataframe(rows, use_container_width=True, hide_index=True)
+
+st.markdown('</div>', unsafe_allow_html=True)
 
 if last_response.get("saran"):
     st.markdown("#### :material/chat: Saran Anda")

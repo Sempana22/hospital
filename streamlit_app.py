@@ -34,6 +34,20 @@ st.markdown(
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
+    :root {
+        --bg-1: #f5fbfa;
+        --bg-2: #ecf9f7;
+        --panel: rgba(255,255,255,0.82);
+        --primary: #0e7c7b;
+        --primary-2: #14a098;
+        --primary-3: #7dd3c7;
+        --accent: #f59e0b;
+        --ink: #0f172a;
+        --muted: #52607a;
+        --line: rgba(14,124,123,0.14);
+        --shadow-soft: 0 16px 40px rgba(15, 23, 42, 0.08);
+    }
+
     * {
         font-family: 'Plus Jakarta Sans', 'Manrope', sans-serif;
         letter-spacing: -0.01em;
@@ -46,7 +60,7 @@ st.markdown(
         background:
             radial-gradient(circle at 12% 8%, rgba(28, 194, 175, 0.18), transparent 28%),
             radial-gradient(circle at 88% 92%, rgba(245, 158, 11, 0.14), transparent 30%),
-            linear-gradient(135deg, #F7FCFB 0%, #EAF8F5 52%, #FFF8E8 100%);
+            linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 52%, #fff9ee 100%);
     }
     .stApp::before {
         content: "";
@@ -62,6 +76,92 @@ st.markdown(
         padding-top: 0 !important;
         padding-left: 0 !important;
         padding-right: 0 !important;
+    }
+    .block-container {
+        padding-top: 1.25rem !important;
+        padding-bottom: 2rem !important;
+        max-width: 1280px !important;
+    }
+
+    [data-testid="stSidebar"] {
+        background: linear-gradient(180deg, rgba(6, 41, 40, 0.98), rgba(14, 124, 123, 0.95));
+        border-right: 1px solid rgba(255,255,255,0.08);
+        box-shadow: 16px 0 32px rgba(6, 40, 39, 0.12);
+    }
+    [data-testid="stSidebar"] * {
+        color: #ecfeff !important;
+    }
+    section[data-testid="stSidebarContent"] {
+        padding: 1rem 0.5rem 0.75rem !important;
+    }
+    [data-testid="stSidebarNav"] {
+        padding-top: 0.5rem;
+    }
+    [data-testid="stSidebarNav"] > div {
+        gap: 0.2rem;
+    }
+    [data-testid="stSidebarNav"] a {
+        border-radius: 14px !important;
+        margin: 0.16rem 0.45rem;
+        padding: 0.72rem 0.8rem !important;
+        transition: all 0.22s ease;
+        border: 1px solid transparent;
+    }
+    [data-testid="stSidebarNav"] a:hover {
+        background: rgba(255,255,255,0.12) !important;
+        transform: translateX(2px);
+        border-color: rgba(255,255,255,0.12);
+    }
+    [data-testid="stSidebarNav"] a[aria-current="page"] {
+        background: rgba(255,255,255,0.18) !important;
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);
+    }
+    [data-testid="stSidebarNav"] a span {
+        font-weight: 700 !important;
+        letter-spacing: -0.01em;
+    }
+
+    .stMetric {
+        background: rgba(255,255,255,0.7);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 1rem 1rem 0.85rem;
+        box-shadow: var(--shadow-soft);
+    }
+    .stMetric .metric-label {
+        color: var(--muted) !important;
+        font-size: 0.78rem !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.01em;
+    }
+    .stMetric .metric-value {
+        color: var(--ink) !important;
+        font-size: clamp(1.2rem, 1.8vw, 1.9rem) !important;
+        font-weight: 800 !important;
+    }
+
+    .stButton > button,
+    .stDownloadButton > button {
+        transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+    }
+    .stButton > button:hover,
+    .stDownloadButton > button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 20px rgba(14,124,123,0.18);
+    }
+    div[data-testid="stSpinner"] {
+        animation: spinIn 0.4s ease-out;
+    }
+    div[data-testid="stSpinner"] > div {
+        width: 2.1rem !important;
+        height: 2.1rem !important;
+        border-width: 0.22rem !important;
+        border-color: rgba(14,124,123,0.2) !important;
+        border-top-color: #0e7c7b !important;
+    }
+    @keyframes spinIn {
+        from { opacity: 0; transform: scale(0.9); }
+        to { opacity: 1; transform: scale(1); }
     }
 
     .welcome-wrap {
