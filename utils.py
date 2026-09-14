@@ -24,7 +24,7 @@ QUESTIONS = {
     "q7": "Sikap dokter dalam memberikan pelayanan dan menjelaskan kondisi pasien",
     "q8": "Kecepatan dan ketepatan pelayanan kesehatan yang diberikan kepada anak",
     "q9": "Keamanan dan ketenangan lingkungan selama anak menjalani rawat inap",
-    "q10": "Ketepatan waktu pemberian makanan kepada pasien",
+    "q10": "Seberapa puas Anda terhadap kualitas makanan yang diberikan, meliputi rasa, kebersihan, tekstur, dan kesesuaian makanan dengan kebutuhan pasien",
     "q11": "Kepuasan keseluruhan terhadap pelayanan Ruang Anak Rawat Inap Parkit RSUD SLG Kediri",
     "q12": "Seberapa puas Anda terhadap ketepatan waktu pemberian makanan kepada pasien selama dirawat di Ruang Anak Rawat Inap Parkit?",
 }
